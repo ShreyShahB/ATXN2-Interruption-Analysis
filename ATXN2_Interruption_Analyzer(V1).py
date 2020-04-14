@@ -4,7 +4,7 @@ Flanking Analysis
 Comp and NonComp - How to best output interruptions (For ALL LC is Most Interruptions Accurate) - If all interruption then ideal would be an analysis around each specific interruption
 Spanning Matrix Validation
 Cutstring Shaping
-Error/NOTES handling
+Error/NOTES handling (Improved With New Version)
 Check all comp is similiar
  - Clean Code: Iterator, Default, and Number Holders
 
@@ -31,7 +31,7 @@ substringSpan = "SPANNING_"
 substringend = ":"
 substringread = "align: |"
 substringfstart = "|    "
-substringfend = "   |"      
+substringfend = "   |"
 substringflanking = "FLANKING:"
 substringflankSTOP = "C9ORF72:"
 regrepeat = "CTG"
@@ -44,7 +44,7 @@ substringEND = ">	."
 ShouldIVlookup = 1
 selectivity=0.25
 
-CHGVID, File, IGM_SUB, GROUP, BH_GT, EXPHUNT_RESULT, LG_Result, Large, Large_INT_LOC, SM_RESULT, SMALL, SMALL_INT_LOC, NOTES, Flanking_Reads, Error_Reads = "CHGVID", "File", "IGM_SUB", "GROUP", "BH_GT", "EXPHUNT_RESULT", "LG_Result", "Large", "Large_INT_LOC", "SM_RESULT", "SMALL", "SMALL_INT_LOC", "NOTES", "Flanking_Reads", "Error_Reads"                
+CHGVID, File, IGM_SUB, GROUP, BH_GT, EXPHUNT_RESULT, LG_Result, Large, Large_INT_LOC, SM_RESULT, SMALL, SMALL_INT_LOC, NOTES, Flanking_Reads, Error_Reads = "CHGVID", "File", "IGM_SUB", "GROUP", "BH_GT", "EXPHUNT_RESULT", "LG_Result", "Large", "Large_INT_LOC", "SM_RESULT", "SMALL", "SMALL_INT_LOC", "NOTES", "Flanking_Reads", "Error_Reads"
 csvRow = [CHGVID, File, IGM_SUB, GROUP, BH_GT, EXPHUNT_RESULT, LG_Result, Large, Large_INT_LOC, SM_RESULT, SMALL, SMALL_INT_LOC, NOTES, Flanking_Reads, Error_Reads]
 
 
@@ -69,7 +69,7 @@ class flankingINPUT:
             self.repeatlocation = repeatlocation
             self.repeatcount = repeatcount
             self.frame = frame
-            self.LowerCaseLocations = LowerCaseLocations    
+            self.LowerCaseLocations = LowerCaseLocations
 class interruptioncount:
         def __init__(self, interruptionlocation, LEFTinterruptionlocation,countHolder, LClocations):
             self.interruptionlocation = interruptionlocation
@@ -93,7 +93,7 @@ class COMPinterruptionlocationholder:
         self.spanningsize = spanningsize
         self.numsimiliar = numsimiliar
         self.readnumlist = readnumlist
-        self.LClocations = LClocations 
+        self.LClocations = LClocations
         self.interruptionnoncomp = interruptionnoncomp
         self.compinterruption = compinterruption
         self.compstatus = compstatus
@@ -146,7 +146,7 @@ if (val == 'Y') == False:
                         columnNumBH = input("(Input capital N if you don't want to) What is the Column Number for BH_GT:")
                         if columnNumBH == 'N':
                                 columnNumBH = "5" #
-                        
+
                         vlookupfilename=excelinput
                         vlookupn=0
                         outputfile=input("(Input capital N if you don't want to Output)Output file name:")
@@ -179,14 +179,14 @@ if (val == 'Y'):
                         columnNumBH = input("(Input capital N if you don't want to) What is the Column Number for BH_GT:")
                         if columnNumBH == 'N':
                                 columnNumBH = "5" #
-                        
+
                         vlookupfilename=excelinput
                         vlookupn=0
                 outputfile=input("(Input capital N if you don't want to Output) Output file name:")
-        
+
         else:
                 print("ERROR: File Contains no values")
-              
+
 outputfilecheck = outputfile+".csv"
 myfile_OPFC = Path(outputfilecheck)
 while myfile_OPFC.is_file():
@@ -199,18 +199,18 @@ if (outputfile == 'N') == False:
         with open(csvfile, "a", newline='') as fp:
                 wr = csv.writer(fp, dialect='excel')
                 wr.writerow(csvRow)
-                
+
 if isinstance(chgvids, str):
         chgvids = [chgvids]
 for z in chgvids:
-    CHGVID, File, IGM_SUB, GROUP, BH_GT, EXPHUNT_RESULT, LG_Result, Large, Large_INT_LOC, SM_RESULT, SMALL, SMALL_INT_LOC, NOTES, Flanking_Reads, Error_Reads = "CHGVID", "File", "IGM_SUB", "GROUP", "BH_GT", "EXPHUNT_RESULT", "LG_Result", "Large", "Large_INT_LOC", "SM_RESULT", "SMALL", "SMALL_INT_LOC", "NOTES", "Flanking_Reads", "Error_Reads"                
+    CHGVID, File, IGM_SUB, GROUP, BH_GT, EXPHUNT_RESULT, LG_Result, Large, Large_INT_LOC, SM_RESULT, SMALL, SMALL_INT_LOC, NOTES, Flanking_Reads, Error_Reads = "CHGVID", "File", "IGM_SUB", "GROUP", "BH_GT", "EXPHUNT_RESULT", "LG_Result", "Large", "Large_INT_LOC", "SM_RESULT", "SMALL", "SMALL_INT_LOC", "NOTES", "Flanking_Reads", "Error_Reads"
     csvRow = [CHGVID, File, IGM_SUB, GROUP, BH_GT, EXPHUNT_RESULT, LG_Result, Large, Large_INT_LOC, SM_RESULT, SMALL, SMALL_INT_LOC, NOTES, Flanking_Reads, Error_Reads]
     if (excelinput == "Empty") == False:
             vlookupn = vlookupn + 1
             IGM_SUB = "=VLOOKUP(A"+str(vlookupn+1)+", '["+vlookupfilename+".xlsx]"+sheetpagename+"'!$1:$1048576,"+columnNumIS+",True)"
             GROUP = "=VLOOKUP(A"+str(vlookupn+1)+", '["+vlookupfilename+".xlsx]"+sheetpagename+"'!$1:$1048576,"+columnNumG+",True)"
             BH_GT = "=VLOOKUP(A"+str(vlookupn+1)+", '["+vlookupfilename+".xlsx]"+sheetpagename+"'!$1:$1048576,"+columnNumBH+",True)"
-                
+
     spanninglist=[]
     flanking =[]
     flankingfinal=[]
@@ -218,7 +218,7 @@ for z in chgvids:
     ATXN2Interruptions = []
     vcflist = []
     Large_INT_LOC = []
-    SMALL_INT_LOC = [] 
+    SMALL_INT_LOC = []
     NOTES = []
     ERROR = []
     Flanking_Reads = []
@@ -232,7 +232,7 @@ for z in chgvids:
     flankingmatchlist = []
     spanningcheckerlist=[]
     LClocations = []
-    LCHelper = []  
+    LCHelper = []
     interruptionnoncomp = []
     compinterruption = []
     comp=[]
@@ -242,6 +242,9 @@ for z in chgvids:
     compresolver = []
     interpretor = []
     longest= []
+    NOTESINTER = []
+    joinertemp = []
+    norepeaterfornotes = []
     d=defaultdict(list)
     inter=defaultdict(list)
     LCUSEFUL = defaultdict(list)
@@ -275,10 +278,10 @@ for z in chgvids:
     ERRORnum=0 #DO IT RETROACTIVELY ABOVE
     LG_Result = 0
     LG_HOLDER=""
-    Large = 0  
+    Large = 0
     SM_RESULT = 0
     SM_HOLDER=""
-    SMALL = 0 
+    SMALL = 0
     readindexnum=0
     runningindex=0
     spanningindexnum=0
@@ -289,8 +292,8 @@ for z in chgvids:
     counts = 0
     flankingchecker = False
     numsimiliar = 0
-    compstatus=True    
-    
+    compstatus=True
+
     holder=z
     holdervcf=holder+vcfcheck
     holderlog=holder+logcheck
@@ -306,7 +309,7 @@ for z in chgvids:
         Existence_Counter = "N"
     if my_fileVCF.is_file()==False:
             vcflist.append(fileCharacteristics(holder, Existence_Counter, EXP_RES))
-    if my_fileVCF.is_file()==True:        
+    if my_fileVCF.is_file()==True:
             f = open(my_fileVCF,'r')
             messageVCF = f.read()
             res = messageVCF.splitlines()
@@ -342,7 +345,9 @@ for z in chgvids:
     filename=holderlog
     f = open(filename,'r')
     messageLOG = f.read()
-    resLog = messageLOG.splitlines()            
+    resLog = messageLOG.splitlines()
+    if((substringATXN2 in resLog[0]) ++ (substringSpan in resLog[1]))==False:
+        Error_Reads.appends("LogFile_FormatError: ATXN2 Not Found + Spanning Label Not Found")
     if((substringATXN2 in resLog[0]) ++ (substringSpan in resLog[1])): #Based on format
             for i in resLog:
                     index = index + 1
@@ -388,7 +393,7 @@ for z in chgvids:
                             flankingstart = resLog[flankingindex+1].rfind(substringfstart)+2
                             flankingend =161 #Based on format
                         flankingstring = flankingholder[(flankingstart):(flankingend + 3)] #Based on format
-                        flanking.append(readFrame(flankingstring, flankingstart, flankingend))              
+                        flanking.append(readFrame(flankingstring, flankingstart, flankingend))
     for k, v in tempspanninglist:
             d[k].append(v)
     tempspanninglist.clear()
@@ -456,7 +461,7 @@ for z in chgvids:
             flankingfinal.append(flankingINPUT(lineReadholder, frameStartholder, frameEndholder, ILholder, INTcount, Rholder, REPcount, frameholder, lowercaseLocations))
     #Interpretation Section
     #tempspanninglist contains list of all the spanning lengths
-            
+
     for obj in spanninglist:
             percentages.append(obj.reads/TotalSpanningReads)
             runner.append(obj.reads)
@@ -480,7 +485,7 @@ for z in chgvids:
             for obj in interruptioncheckerlist:
                 print(obj.spanningsize, obj.readindex, obj.percentagespanning, obj.lineread, obj.interruptionlocations, obj.counts, obj.lowercaselocations, obj.truncatelclocations, obj.flankingchecker, obj.flankingmatchlist, sep =', ' )
             for obj in spanningcheckerlist:
-                print(obj. spanningsize, obj.percentagespanning, obj.reads, sep =', ' ) 
+                print(obj. spanningsize, obj.percentagespanning, obj.reads, sep =', ' )
 
 
     #NOT COMP
@@ -506,7 +511,7 @@ for z in chgvids:
                                 if runnervar == 0:
                                         readnumlist = []
                                         readnumlist.append(obj.readindex)
-                                        notcomp.append(COMPinterruptionlocationholder(obj.interruptionlocations, obj.spanningsize, 1, readnumlist, LClocations, interruptionnoncomp, compinterruption, compstatus))                
+                                        notcomp.append(COMPinterruptionlocationholder(obj.interruptionlocations, obj.spanningsize, 1, readnumlist, LClocations, interruptionnoncomp, compinterruption, compstatus))
             for j in notcomp:
                    holdervariableCDT=str(j.spanningsize)
                    compdictransfer.append((holdervariableCDT, j))
@@ -523,8 +528,8 @@ for z in chgvids:
                                     compresolver.append((x, obj.interruptionlocation))
                     if (len(notcompdict[x])== 0):
                             compresolver.append((x, "EMPTY"))
-                            NOTES.append("Reads for Spanning " + str(x) + " are all comp")
-                    if (len(notcompdict[x])> 1): 
+                            NOTES.append("Spanningsize " + str(x) + ": All Compromised")
+                    if (len(notcompdict[x])> 1):
                             NUMSIMILARTOTAL=0
                             for obj in notcompdict[x]:
                                     NUMSIMILARTOTAL=NUMSIMILARTOTAL+obj.numsimiliar
@@ -536,12 +541,13 @@ for z in chgvids:
                             for obj in notcompdict[x]:
                                     if (obj.interruptionlocation == interpretor[0].interruptionlocation):
                                             continue
+                                    norepeaterfornotes.append(obj.spanningsize)
                                     NOTES.append("NCSpanning "+obj.spanningsize+" w/ Interruptions@"+str(obj.interruptionlocation)+";#Reads: "+str(obj.numsimiliar)+"@ReadNumbers-"+str(obj.readnumlist))
-        
+
     if (len(compdictransfer) == 0):
             for x in tempspanninglist:
                     compresolver.append((x, "EMPTY"))
-                    
+
     #COMP
     if testermode == 1:
             print("comp")
@@ -579,7 +585,7 @@ for z in chgvids:
                                                                                 for h in compinterruption:
                                                                                                 if h == p:
                                                                                                         noncomprunner=1
-                                                                                if noncomprunner==0:                        
+                                                                                if noncomprunner==0:
                                                                                         o.compinterruption.append(p)
                                                                                 o.LClocations.append((p, obj.readindex))
                                                                         if (comparelow <= effectivee <= comparehigh) ==False:
@@ -590,7 +596,7 @@ for z in chgvids:
                                                                                 for h in o.interruptionnoncomp:
                                                                                         if h==(e, obj.readindex):
                                                                                                 noncomprunner=1
-                                                                                if noncomprunner==0:                        
+                                                                                if noncomprunner==0:
                                                                                         o.interruptionnoncomp.append((e, obj.readindex))#
                                                 if len(interruptionholderC) == 0:
                                                         for u in compresolver:
@@ -607,7 +613,7 @@ for z in chgvids:
                                                                                                         for h in compinterruption:
                                                                                                                         if h == p:
                                                                                                                                 noncomprunner=1
-                                                                                                        if noncomprunner==0:                        
+                                                                                                        if noncomprunner==0:
                                                                                                                 o.compinterruption.append(p)
                                                                                                         o.LClocations.append((p, obj.readindex))
                                                                                                 if (comparelow <= effectivee <= comparehigh) ==False:
@@ -618,7 +624,7 @@ for z in chgvids:
                                                                                                         for h in o.interruptionnoncomp:
                                                                                                                 if h==(e, obj.readindex):
                                                                                                                         noncomprunner=1
-                                                                                                        if noncomprunner==0:                        
+                                                                                                        if noncomprunner==0:
                                                                                                                 o.interruptionnoncomp.append((e, obj.readindex))
                                                 runnervar = 1
                                 if runnervar == 0:
@@ -639,7 +645,7 @@ for z in chgvids:
                                                                         for h in compinterruption:
                                                                                         if h == p:
                                                                                                 noncomprunner=1
-                                                                        if noncomprunner==0:                        
+                                                                        if noncomprunner==0:
                                                                                 compinterruption.append(p)
                                                                         LCHelper.append((p, obj.readindex))
                                                                 if (comparelow <= effectivee <= comparehigh) ==False:
@@ -650,7 +656,7 @@ for z in chgvids:
                                                                         for h in interruptionnoncomp:
                                                                                         if h==(e, obj.readindex):
                                                                                                 noncomprunner=1
-                                                                        if noncomprunner==0:                        
+                                                                        if noncomprunner==0:
                                                                                 interruptionnoncomp.append((e, obj.readindex))
                                         if len(interruptionholderC) == 0:
                                                 for u in compresolver:
@@ -667,7 +673,7 @@ for z in chgvids:
                                                                                                 for h in compinterruption:
                                                                                                                 if h == p:
                                                                                                                         noncomprunner=1
-                                                                                                if noncomprunner==0:                        
+                                                                                                if noncomprunner==0:
                                                                                                         compinterruption.append(p)
                                                                                                 LCHelper.append((p, obj.readindex))
                                                                                         if (comparelow <= effectivee <= comparehigh) ==False:
@@ -678,10 +684,10 @@ for z in chgvids:
                                                                                                 for h in interruptionnoncomp:
                                                                                                                 if h==(e, obj.readindex):
                                                                                                                         noncomprunner=1
-                                                                                                if noncomprunner==0:                        
+                                                                                                if noncomprunner==0:
                                                                                                         interruptionnoncomp.append((e, obj.readindex))
                                         readnumlist.append(obj.readindex)
-                                        comp.append(COMPinterruptionlocationholder(obj.interruptionlocations, obj.spanningsize, 1, readnumlist, LCHelper, interruptionnoncomp, compinterruption, compstatus))       
+                                        comp.append(COMPinterruptionlocationholder(obj.interruptionlocations, obj.spanningsize, 1, readnumlist, LCHelper, interruptionnoncomp, compinterruption, compstatus))
             for j in comp:
                    holdervariableCDT=str(j.spanningsize)
                    compdictransfer.append((holdervariableCDT, j))
@@ -692,20 +698,20 @@ for z in chgvids:
 
 
     if testermode == 1:
-            for x in tempspanninglist: 
+            for x in tempspanninglist:
                 for obj in compdict[x]:
                         print(obj.interruptionlocation, obj.spanningsize, obj.numsimiliar, obj.readnumlist, obj.LClocations, obj.interruptionnoncomp, obj.compinterruption, obj.compstatus, sep =', ')
 
-    
+
     for x in tempspanninglist:
         RUNNERU=-1
         for u in compresolver:
                 RUNNERU=RUNNERU+1
                 if u[0] == x:
-                        if u[1]=="EMPTY": 
+                        if u[1]=="EMPTY":
                                 for obj in compdict[x]:
                                         if len(obj.interruptionlocation)>len(longest):
-                                                longest=obj.interruptionlocation 
+                                                longest=obj.interruptionlocation
                                 del compresolver[RUNNERU]
                                 compresolver.insert(RUNNERU, (x, longest))
 
@@ -732,7 +738,7 @@ for z in chgvids:
                         for u in compresolver:
                                 if u[0] == x:
                                         SMALL_INT_LOC = u[1]
-        NOTES.append("InterIssues")
+        #NOTES.append("InterIssues") we need one that outputs the noncomp issues as well - DO LATER (InterIssues is a placeholder)
     #Sort based on percentages - then when outputing sort the two to output based on which is greate with two if statements
     spanningcheckerlist.sort(key=lambda x: x.percentagespanning, reverse = True)
     #Spanning  Selectivity
@@ -750,21 +756,35 @@ for z in chgvids:
                             if int(x) == spanningcheckerlist[1].spanningsize:
                                     for u in compresolver:
                                             if u[0] == x:
-                                                    SMALL_INT_LOC = u[1]                    
+                                                    SMALL_INT_LOC = u[1]
             if spanningcheckerlist[1].spanningsize > spanningcheckerlist[0].spanningsize:
                     LG_Result=spanningcheckerlist[1].spanningsize
                     for x in tempspanninglist:
                         if int(x) == spanningcheckerlist[1].spanningsize:
                                 for u in compresolver:
                                         if u[0] == x:
-                                                Large_INT_LOC = u[1]                    
+                                                Large_INT_LOC = u[1]
                     SM_RESULT=spanningcheckerlist[0].spanningsize
                     for x in tempspanninglist:
                             if int(x) == spanningcheckerlist[0].spanningsize:
                                     for u in compresolver:
                                             if u[0] == x:
-                                                    SMALL_INT_LOC = u[1]  
-            NOTES.append("APPEND THE REST")
+                                                    SMALL_INT_LOC = u[1]
+            for f in tempspanninglist:
+                if (str(f) == str(LG_Result) or str(f) == str(SM_RESULT)) == True:
+                    continue
+                if (str(f) == str(LG_Result) or str(f) == str(SM_RESULT)) == False:
+                    if (f in norepeaterfornotes) == False:
+                        if len(notcompdict[f]) > 0:
+                            NOTESINTER.append("NC:")
+                        for obj in notcompdict[f]:
+                            NOTESINTER.append("Spanningsize "+obj.spanningsize+" w/ Interruptions@"+str(obj.interruptionlocation)+";#Reads: "+str(obj.numsimiliar)+"@ReadNumbers-"+str(obj.readnumlist))
+                    if len(compdict[f]) > 0:
+                        NOTESINTER.append("~C:")
+                    for obj in compdict[f]:
+                        NOTESINTER.append("Spanningsize "+obj.spanningsize+" w/ Interruptions@"+str(obj.interruptionlocation)+";#Reads: "+str(obj.numsimiliar)+"@ReadNumbers-"+str(obj.readnumlist))
+            NOTES.append(''.join(NOTESINTER))
+            NOTESINTER = []
         elif int(spanningcheckerlist[0].percentagespanning)>=selectivity and ((int(spanningcheckerlist[1].percentagespanning)>=selectivity)==False):
                 if (spanningcheckerlist[1].reads>(int(spanningcheckerlist[2].reads) + 2)):
                     if spanningcheckerlist[0].spanningsize > spanningcheckerlist[1].spanningsize:
@@ -773,27 +793,41 @@ for z in chgvids:
                                 if int(x) == spanningcheckerlist[0].spanningsize:
                                         for u in compresolver:
                                                 if u[0] == x:
-                                                        Large_INT_LOC = u[1]                              
+                                                        Large_INT_LOC = u[1]
                             SM_RESULT=spanningcheckerlist[1].spanningsize
                             for x in tempspanninglist:
                                     if int(x) == spanningcheckerlist[1].spanningsize:
                                             for u in compresolver:
                                                     if u[0] == x:
-                                                            SMALL_INT_LOC = u[1]  
+                                                            SMALL_INT_LOC = u[1]
                     if spanningcheckerlist[1].spanningsize > spanningcheckerlist[0].spanningsize:
                             LG_Result=spanningcheckerlist[1].spanningsize
                             for x in tempspanninglist:
                                 if int(x) == spanningcheckerlist[1].spanningsize:
                                         for u in compresolver:
                                                 if u[0] == x:
-                                                        Large_INT_LOC = u[1]                              
+                                                        Large_INT_LOC = u[1]
                             SM_RESULT=spanningcheckerlist[0].spanningsize
                             for x in tempspanninglist:
                                     if int(x) == spanningcheckerlist[0].spanningsize:
                                             for u in compresolver:
                                                     if u[0] == x:
-                                                            SMALL_INT_LOC = u[1]  
-                    NOTES.append("APPEND THE REST")      
+                                                            SMALL_INT_LOC = u[1]
+                    for f in tempspanninglist:
+                        if (str(f) == str(LG_Result) or str(f) == str(SM_RESULT)) == True:
+                            continue
+                        if (str(f) == str(LG_Result) or str(f) == str(SM_RESULT)) == False:
+                            if (f in norepeaterfornotes) == False:
+                                if len(notcompdict[f]) > 0:
+                                    NOTESINTER.append("NC:")
+                                for obj in notcompdict[f]:
+                                    NOTESINTER.append("Spanningsize "+obj.spanningsize+" w/ Interruptions@"+str(obj.interruptionlocation)+";#Reads: "+str(obj.numsimiliar)+"@ReadNumbers-"+str(obj.readnumlist))
+                            if len(compdict[f]) > 0:
+                                NOTESINTER.append("~C:")
+                            for obj in compdict[f]:
+                                NOTESINTER.append("Spanningsize "+obj.spanningsize+" w/ Interruptions@"+str(obj.interruptionlocation)+";#Reads: "+str(obj.numsimiliar)+"@ReadNumbers-"+str(obj.readnumlist))
+                    NOTES.append(''.join(NOTESINTER))
+                    NOTESINTER = []
                 if spanningcheckerlist[2].reads<=spanningcheckerlist[1].reads<=(int(spanningcheckerlist[2].reads) + 2):
                     if spanningcheckerlist[1].spanningsize > spanningcheckerlist[2].spanningsize:
                             if spanningcheckerlist[0].spanningsize > spanningcheckerlist[1].spanningsize:
@@ -802,27 +836,27 @@ for z in chgvids:
                                         if int(x) == spanningcheckerlist[0].spanningsize:
                                                 for u in compresolver:
                                                         if u[0] == x:
-                                                                Large_INT_LOC = u[1]                                      
+                                                                Large_INT_LOC = u[1]
                                     SM_RESULT=spanningcheckerlist[1].spanningsize
                                     for x in tempspanninglist:
                                             if int(x) == spanningcheckerlist[1].spanningsize:
                                                     for u in compresolver:
                                                             if u[0] == x:
-                                                                    SMALL_INT_LOC = u[1]  
+                                                                    SMALL_INT_LOC = u[1]
                             if spanningcheckerlist[1].spanningsize > spanningcheckerlist[0].spanningsize:
                                     LG_Result=spanningcheckerlist[1].spanningsize
                                     for x in tempspanninglist:
                                         if int(x) == spanningcheckerlist[1].spanningsize:
                                                 for u in compresolver:
                                                         if u[0] == x:
-                                                                Large_INT_LOC = u[1]                                      
+                                                                Large_INT_LOC = u[1]
                                     SM_RESULT=spanningcheckerlist[0].spanningsize
                                     for x in tempspanninglist:
                                             if int(x) == spanningcheckerlist[0].spanningsize:
                                                     for u in compresolver:
                                                             if u[0] == x:
-                                                                    SMALL_INT_LOC = u[1]  
-                            NOTES.append("Print there is an error witht the small spanningsize as there is another Spanningsize with a similiar number of reads")
+                                                                    SMALL_INT_LOC = u[1]
+                            NOTES.append("Error with the Small spanningsize; SimReads as Spanningsize: "+str(spanningcheckerlist[2].spanningsize))
                     if spanningcheckerlist[2].spanningsize > spanningcheckerlist[1].spanningsize:
                             if spanningcheckerlist[0].spanningsize > spanningcheckerlist[2].spanningsize:
                                     LG_Result=spanningcheckerlist[0].spanningsize
@@ -830,27 +864,27 @@ for z in chgvids:
                                         if int(x) == spanningcheckerlist[0].spanningsize:
                                                 for u in compresolver:
                                                         if u[0] == x:
-                                                                Large_INT_LOC = u[1]  
+                                                                Large_INT_LOC = u[1]
                                     SM_RESULT=spanningcheckerlist[2].spanningsize
                                     for x in tempspanninglist:
                                             if int(x) == spanningcheckerlist[2].spanningsize:
                                                     for u in compresolver:
                                                             if u[0] == x:
-                                                                    SMALL_INT_LOC = u[1]  
+                                                                    SMALL_INT_LOC = u[1]
                             if spanningcheckerlist[2].spanningsize > spanningcheckerlist[0].spanningsize:
                                     LG_Result=spanningcheckerlist[2].spanningsize
                                     for x in tempspanninglist:
                                         if int(x) == spanningcheckerlist[2].spanningsize:
                                                 for u in compresolver:
                                                         if u[0] == x:
-                                                                Large_INT_LOC = u[1]  
+                                                                Large_INT_LOC = u[1]
                                     SM_RESULT=spanningcheckerlist[0].spanningsize
                                     for x in tempspanninglist:
                                             if int(x) == spanningcheckerlist[0].spanningsize:
                                                     for u in compresolver:
                                                             if u[0] == x:
-                                                                    SMALL_INT_LOC = u[1]  
-                            NOTES.append("Print there is an error witht the small spanningsize as there is another Spanningsize with a similiar number of reads")
+                                                                    SMALL_INT_LOC = u[1]
+                            NOTES.append("Error with the Small spanningsize; SimReads as Spanningsize: "+str(spanningcheckerlist[1].spanningsize))
         else:
                 if spanningcheckerlist[0].spanningsize > spanningcheckerlist[1].spanningsize:
                     LG_Result=spanningcheckerlist[0].spanningsize
@@ -864,7 +898,7 @@ for z in chgvids:
                             if int(x) == spanningcheckerlist[1].spanningsize:
                                     for u in compresolver:
                                             if u[0] == x:
-                                                    SMALL_INT_LOC = u[1]  
+                                                    SMALL_INT_LOC = u[1]
                 if spanningcheckerlist[1].spanningsize > spanningcheckerlist[0].spanningsize:
                     LG_Result=spanningcheckerlist[1].spanningsize
                     for x in tempspanninglist:
@@ -877,12 +911,36 @@ for z in chgvids:
                             if int(x) == spanningcheckerlist[0].spanningsize:
                                     for u in compresolver:
                                             if u[0] == x:
-                                                    SMALL_INT_LOC = u[1]  
-                NOTES.append("Print there is an errorNOT A LOT OF READS")
+                                                    SMALL_INT_LOC = u[1]
+                for f in tempspanninglist:
+                    if (str(f) == str(LG_Result) or str(f) == str(SM_RESULT)) == True:
+                        continue
+                    if (str(f) == str(LG_Result) or str(f) == str(SM_RESULT)) == False:
+                        if (f in norepeaterfornotes) == False:
+                            if len(notcompdict[f]) > 0:
+                                NOTESINTER.append("NC:")
+                            for obj in notcompdict[f]:
+                                NOTESINTER.append("Spanningsize "+obj.spanningsize+" w/ Interruptions@"+str(obj.interruptionlocation)+";#Reads: "+str(obj.numsimiliar)+"@ReadNumbers-"+str(obj.readnumlist))
+                        if len(compdict[f]) > 0:
+                            NOTESINTER.append("~C:")
+                        for obj in compdict[f]:
+                            NOTESINTER.append("Spanningsize "+obj.spanningsize+" w/ Interruptions@"+str(obj.interruptionlocation)+";#Reads: "+str(obj.numsimiliar)+"@ReadNumbers-"+str(obj.readnumlist))
+                NOTES.append(''.join(NOTESINTER))
+                NOTESINTER = []
 
     #CSV - PRODUCTION
     Large=len(Large_INT_LOC)
     SMALL=len(SMALL_INT_LOC)
+    NOTES = '(;)'.join(NOTES)
+    Flanking_Reads = ', '.join(Flanking_Reads)
+    Error_Reads = ', '.join(Error_Reads)
+    for i in Large_INT_LOC:
+        joinertemp.append(str(i))
+    Large_INT_LOC = ', '.join(joinertemp)
+    joinertemp = []
+    for i in SMALL_INT_LOC:
+        joinertemp.append(str(i))
+    SMALL_INT_LOC = ', '.join(joinertemp)
     if (outputfile == 'N') == False:
             with open(csvfile, "a", newline='') as fp:
                     wr = csv.writer(fp, dialect='excel')
@@ -904,7 +962,7 @@ for z in chgvids:
             print("ERROR: " +str(ERROR))
             print("Flanking_Reads: " +str(Flanking_Reads))
             print("Error_Reads: " +str(Error_Reads))
-    if testermode == 1:       
+    if testermode == 1:
             #CHECK (Excel Output)
             print("The CHGVID: " + z)
             print("LG_Result: " +str(LG_Result))
@@ -917,10 +975,10 @@ for z in chgvids:
             print("ERROR: " +str(ERROR))
             print("Flanking_Reads: " +str(Flanking_Reads))
             print("Error_Reads: " +str(Error_Reads))
-            
-            for obj in spanninglist: 
+
+            for obj in spanninglist:
                 print(obj.spanningsize, obj.reads, sep =', ' )
-                
+
             for i in tempspanninglist:
                     print(i)
                     for obj in d[i]:
@@ -934,14 +992,14 @@ for z in chgvids:
             for obj in flankingfinal:
                 print(obj.lineRead, obj.frameStart, obj.frameEnd, obj.interruptionlocation, obj.interruptioncount, obj.repeatlocation, obj.repeatcount, obj.frame, obj.LowerCaseLocations, sep =', ' )
 
-            for obj in vcflist: 
+            for obj in vcflist:
                     print( obj.filename, obj.existence, obj.EXP_RES, sep =', ' )
 
             for i in tempspanninglist:
                     print(i)
                     for obj in d[i]:
                             print(obj.lineRead, obj.frameStart, obj.frameEnd, sep =', ' )
-                            
+
             for i in tempspanninglist:
                     for obj in inter[i]:
                             print(i, obj.interruptionlocation, obj.LEFTinterruptionlocation, obj.countHolder, obj.LClocations, sep =', ' )
